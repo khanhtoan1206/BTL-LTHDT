@@ -1,0 +1,73 @@
+import java.io.*;
+import java.util.*;
+
+public class MangNhiPhan {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String fileName = "mangSoNguyen.txt";
+
+        try {
+            System.out.print("Nhập số lượng phần tử của mảng: ");
+            int n = Integer.parseInt(scanner.nextLine()); 
+            int[] arr = new int[n];
+
+            for (int i = 0; i < n; i++) {
+                System.out.print("Nhập phần tử thứ " + (i + 1) + ": ");
+                arr[i] = Integer.parseInt(scanner.nextLine());
+            }
+
+         
+            FileOutputStream fos = new FileOutputStream(fileName);
+            DataOutputStream dos = new DataOutputStream(fos);
+
+            for (int num : arr) {
+                dos.writeInt(num); 
+            }
+
+            dos.close();
+            fos.close();
+            System.out.println(" Đã ghi mảng vào file nhị phân '" + fileName + "' thành công!");
+
+           
+            FileInputStream fis = new FileInputStream(fileName);
+            DataInputStream dis = new DataInputStream(fis);
+
+            List<Integer> list = new ArrayList<>();
+            try {
+                while (true) {
+                    list.add(dis.readInt());
+                }
+            } catch (EOFException e) {
+               
+            }
+
+            dis.close();
+            fis.close();
+
+    
+            System.out.println(" Danh sách các phần tử trong mảng:");
+            for (int i = 0; i < list.size(); i++) {
+                System.out.print(list.get(i) + " ");
+            }
+
+            int tong = 0;
+            for (int num : list) {
+                tong += num;
+            }
+
+            int dem = list.size();
+            double trungBinh = (dem > 0) ? (double) tong / dem : 0;
+
+            System.out.println(" Tổng các phần tử: " + tong);
+            System.out.println(" Số lượng phần tử: " + dem);
+            System.out.println(" Giá trị trung bình: " + trungBinh);
+
+        } catch (IOException e) {
+            System.out.println(" Lỗi khi đọc/ghi file: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("️ Lỗi: Vui lòng nhập số hợp lệ!");
+        } finally {
+            scanner.close();
+        }
+    }
+}
